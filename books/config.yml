@@ -1,0 +1,63 @@
+---
+- name: User setup for AUR packages
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create user for AUR packages (aur_builder)
+      user:
+        name: aur_builder
+        create_home: no
+        group: wheel
+    - name: Add aur_builder to /etc/sudoers.d/ (only for pacman)
+      lineinfile:
+        path: /etc/sudoers.d/11-install-aur_builder
+        line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+        create: yes
+        validate: 'visudo -cf %s'
+
+- name: Create an archive of all config files on local machine
+  hosts: localhost
+  tasks:
+    - name: Create the archive
+      archive:
+        group: wheel
+        dest: /tmp/ansible_config_archive.tar.xz
+        format: xz
+        path:
+          - ~/.config/
+          - ~/.config/bash/
+          - ~/.config/ckb-next/
+          - ~/.config/coc/ # TODO: what is this?
+          - ~/.config/configstore/ # TODO
+          - ~/.config/dconf/ # TODO
+          - ~/.config/dunst/ # TODO
+          - ~/.config/enchant/ # TODO
+          - ~/.config/fcitx/
+          - ~/.config/fontconfig/ # TODO: do I need this?
+          - ~/.config/gh/ # TODO
+          - ~/.config/git/
+          - ~/.config/gnuplot/ # TODO: did I change anything here?
+          - ~/.config/gtk-2.0/ # TODO
+          - ~/.config/gtk-3.0/ # TODO
+          - ~/.config/i3/
+          - ~/.config/kernel.org/ # TODO
+          - ~/.config/kritarc # TODO
+          - ~/.config/latexmkrc
+          - ~/.config/libvirt/ # TODO
+          - ~/.config/mpv/
+          - ~/.config/Mumble/
+          - ~/.config/mutt/
+          - ~/.config/nnn/ # TODO
+          - ~/.config/pacmixer/ # TODO
+          - ~/.config/pavucontrol.ini # TODO
+          - ~/.config/picom.conf # TODO
+          - ~/.config/pulse/ # TODO
+          - ~/.dotfiles
+        exclude_path:
+          - ~/.config/chromium
+          - ~/.config/darktable
+          - ~/.config/discord
+          - ~/.config/Microsoft
+          - ~/.config/protonfixes
+          - ~/.config/deluge
+          - ~/.config/libreoffice

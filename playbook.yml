@@ -1,0 +1,200 @@
+---
+# TODO: split these plays into multiple files
+
+- name: Initial setup for AUR builder user
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Create user for AUR packages
+      user:
+        name: aur_builder
+#        create_home: no
+        group: wheel
+    - name: Add aur_builder user to sudoers (only for pacman)
+      lineinfile:
+        path: /etc/sudoers.d/11-install-aur_builder
+        line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+        create: yes
+        validate: 'visudo -cf %s'
+
+# Update the whole system
+- name: System update
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Pacman update (pacman -Syu)
+      become: yes
+      pacman:
+        update_cache: yes
+        upgrade: yes
+
+# Software that runs underneath everything
+- name: Base software packages for software development
+  hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    # base-devel (basic build tools for C projects)
+    - name: Install base-devel
+      pacman: # Every package from the base-devel group
+        name:
+          - autoconf
+          - automake
+          - binutils
+          - bison
+          - fakeroot
+          - file
+          - findutils
+          - flex
+          - gawk
+          - gcc
+          - gettext
+          - grep
+          - groff
+          - gzip
+          - libtool
+          - m4
+          - make
+          - pacman
+          - patch
+          - pkgconf
+          - sed
+          - sudo
+          - texinfo
+          - which
+        state: present
+    - name: Install git
+      pacman:
+        name: git
+        state: present
+    - name: Install cmake
+      pacman:
+        name: cmake
+        state: present
+    - name: Install cross-compilation tools (LLVM & clang)
+      pacman:
+        name:
+          - llvm
+          - lld
+          - clang
+        state: present
+    - name: Install QEMU (Quick EMUlator)
+      pacman:
+        name:
+          - qemu
+          - qemu-arch-extra
+        state: present
+
+- name: X-org server and window manager
+  hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: X-org server
+      pacman:
+        name:
+          - xorg-server
+          - xorg-server-common
+          - xorg-xinit
+          - xorg-xrandr
+          - xorg-xev
+          - xorg-setxkbmap
+          - xorg-xgamma
+          - xorg-xinput
+          - mesa-demos
+        state: present
+    - name: i3 Window Manager
+      pacman:
+        name:
+          - i3-gaps
+          - i3status
+          - i3blocks
+          - lightdm
+          - lightdm-gtk-greeter
+          # TODO: config
+        state: present
+
+# Quality of Life Software (better versions of pre-existing CLI tools)
+- name: QoL Software
+  hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: exa (a better ls)
+      pacman:
+        name: exa
+        state: present
+    - name: scc (Sloc, Cloc, and Code)
+      become: yes
+      become_user: aur_builder
+      aur:
+        name: scc
+        state: present
+
+# Install the software I use
+- name: User applications
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Terminal (terminator) and shell prompt (starship)
+      become: yes
+      pacman:
+        name:
+          - terminator
+          - starship
+        state: present
+    - name: Create ~/.config directory
+      file:
+        path: ~/.config
+        state: directory
+    - name: Configure shell prompt (starship)
+      # TODO: read these copy files from somewhere?
+      # or just put them in a seperate playbook (probably seperate playbook)
+      copy:
+        dest: ~/.config/starship.toml
+        content: |
+          add_newline = false
+          format = "$all"
+
+          [line_break]
+          disabled = true
+
+          [character]
+          success_symbol = "[→](bold green)"
+          error_symbol   = "[→](bold red)"
+
+          [directory]
+          truncation_length = 5
+          truncation_symbol = "../"
+
+          [time]
+          disabled = false
+          time_range = "22:00:00-06:00:00"
+
+          [cmd_duration]
+          min_time = 60_000
+
+          [cmake]
+          symbol = "△ "
+    - name: Enable shell prompt
+      lineinfile:
+        path: ~/.bashrc
+        line: eval "$(starship init bash)"
+
+    - name: Vim and its plugins
+      become: yes
+      pacman:
+        name:
+          - vi
+          - gvim
+          - vim-ale
+          - vim-ansible
+        state: present
+
+- name: Grab OS project into home directory
+  hosts: all
+  tasks:
+    - git:
+        repo: 'https://github.com/Ytrewq13/YtrewqOS'
+        dest: ~/YtrewqOS

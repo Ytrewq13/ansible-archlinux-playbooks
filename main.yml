@@ -1,0 +1,21 @@
+---
+- hosts: all
+
+  vars_files:
+    - vars.yml
+
+  pre_tasks:
+    - name: Update pacman cache
+      become: yes
+      pacman:
+        update_cache: yes
+
+  # TODO: add more handlers
+  handlers:
+    - name: restart networkmanager
+      service: name=networkmanager state=restarted
+
+  tasks:
+    - name: User setup
+      become: yes
+      include: books/user.yml
