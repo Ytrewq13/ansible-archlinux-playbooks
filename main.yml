@@ -1,21 +1,25 @@
 ---
+# The first play
 - hosts: all
-
   vars_files:
     - vars.yml
-
   pre_tasks:
     - name: Update pacman cache
       become: yes
       pacman:
         update_cache: yes
-
-  # TODO: add more handlers
-  handlers:
-    - name: restart networkmanager
-      service: name=networkmanager state=restarted
-
+#  handlers:
+#    - name: restart networkmanager
+#      service: name=networkmanager state=restarted
   tasks:
-    - name: User setup
+    - block: # root block 1
+      - name: User setup
+        include_tasks: books/user.yml
+      - name: Install "essential" software
+        include_tasks: books/essentials.yml
       become: yes
-      include: books/user.yml
+    - block: # User block 1
+      - name: Config
+        include_tasks: books/config.yml
+      become: yes
+      become_user: '{{ normal_user.name }}'
