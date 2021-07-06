@@ -19,3 +19,5 @@ normal_user:
 users:
   - '{{ aur_user }}'
   - '{{ normal_user }}'
+
+playbooks_dir: tasks

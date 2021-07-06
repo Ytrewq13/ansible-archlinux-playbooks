@@ -14,12 +14,16 @@
   tasks:
     - block: # root block 1
       - name: User setup
-        include_tasks: books/user.yml
+        import_tasks: '{{ playbooks_dir }}/user.yml'
       - name: Install "essential" software
-        include_tasks: books/essentials.yml
+        import_tasks: '{{ playbooks_dir }}/essentials.yml'
+        tags:
+          - software
       become: yes
     - block: # User block 1
       - name: Config
-        include_tasks: books/config.yml
+        import_tasks: '{{ playbooks_dir }}/config.yml'
+        tags:
+          - config
       become: yes
       become_user: '{{ normal_user.name }}'

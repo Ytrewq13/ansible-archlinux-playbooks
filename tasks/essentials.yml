@@ -50,3 +50,15 @@
       - qemu
       - qemu-arch-extra
     state: present
+
+- name: Quality of Life software
+  block:
+    - name: CLI tools
+      pacman:
+        name:
+          - ripgrep
+          - fzf
+          - the_silver_searcher
+          - exa
+          - starship
+        state: present

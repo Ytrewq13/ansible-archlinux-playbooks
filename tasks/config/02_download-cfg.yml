@@ -1,20 +1,16 @@
 ---
 - name: Git clone the config repository
   git:
-    repo: 'git@github.com:Ytrewq13/.config.git'
+    repo: 'https://github.com/Ytrewq13/.config.git'
     dest: '/home/{{ normal_user.name }}/.config'
 
+# TODO: move all scripts into ~/.local/bin and delete the ~/.scripts directory
 - name: Git clone the scripts repository
   git:
-    repo: 'git@github.com:Ytrewq13/scripts.git'
+    repo: 'https://github.com/Ytrewq13/scripts.git'
     dest: '/home/{{ normal_user.name }}/.scripts'
-
-- name: Ensure the ~/.local directory is present
-  file:
-    path: '/home/{{ normal_user.name }}/.local'
-    state: directory
 
 - name: Git clone the ~/.local/share repository
   git:
-    repo: 'git@github.com:Ytrewq13/localshare.git'
+    repo: 'https://github.com/Ytrewq13/localshare.git'
     dest: '/home/{{ normal_user.name }}/.local/share'

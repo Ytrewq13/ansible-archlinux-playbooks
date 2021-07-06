@@ -1,0 +1,24 @@
+---
+- name: Create ~/.local directory
+  file:
+    path: '/home/{{ normal_user.name }}/.local'
+    state: directory
+    mode: '0755'
+
+- name: Create ~/.local/bin directory
+  file:
+    path: '/home/{{ normal_user.name }}/.local/bin'
+    state: directory
+    mode: '0755'
+
+- name: Create ~/.local/lib directory
+  file:
+    path: '/home/{{ normal_user.name }}/.local/lib'
+    state: directory
+    mode: '0755'
+
+- name: Create ~/.local/share directory
+  file:
+    path: '/home/{{ normal_user.name }}/.local/share'
+    state: directory
+    mode: '0755'

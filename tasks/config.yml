@@ -1,0 +1,13 @@
+---
+- name: Prepare the directories for config files
+  import_tasks: config/01_prepare-dirs.yml
+
+- name: Download all the config files
+  import_tasks: config/02_download-cfg.yml
+
+- name: Symlink config files
+  include_tasks: config/03_create-symlinks.yml
+  loop:
+    - { src: 'bash/bashrc', dest: '.bashrc' }
+    - { src: 'profile',     dest: '.profile' }
+    - { src: 'vim',         dest: '.vim' }
