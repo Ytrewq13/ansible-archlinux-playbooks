@@ -21,3 +21,13 @@ users:
   - '{{ normal_user }}'
 
 playbooks_dir: tasks
+
+config_repos:
+  - { url: 'https://github.com/Ytrewq13/.config.git', dest: '.config' }
+  - { url: 'https://github.com/Ytrewq13/scripts.git', dest: '.scripts' }
+  - { url: 'https://github.com/Ytrewq13/localshare.git', dest: '.local/share' }
+
+config_symlinks:
+  - { src: 'bash/bashrc', dest: '.bashrc' }
+  - { src: 'profile',     dest: '.profile' }
+  - { src: 'vim',         dest: '.vim' }

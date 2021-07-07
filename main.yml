@@ -15,15 +15,17 @@
     - block: # root block 1
       - name: User setup
         import_tasks: '{{ playbooks_dir }}/user.yml'
-      - name: Install "essential" software
-        import_tasks: '{{ playbooks_dir }}/essentials.yml'
-        tags:
-          - software
+        tags: users
+      - name: Install software
+        import_tasks: '{{ playbooks_dir }}/software.yml'
+        tags: software
+#      - name: Install "essential" software
+#        import_tasks: '{{ playbooks_dir }}/essentials.yml'
+#        tags: software
       become: yes
     - block: # User block 1
       - name: Config
         import_tasks: '{{ playbooks_dir }}/config.yml'
-        tags:
-          - config
+        tags: config
       become: yes
       become_user: '{{ normal_user.name }}'
