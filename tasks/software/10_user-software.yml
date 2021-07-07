@@ -1,0 +1,35 @@
+---
+- name: Install Yay dependencies
+  become: yes
+  pacman:
+    name:
+      - git
+      - pacman
+      - go
+      - sudo
+    state: present
+
+- name: Yay AUR helper
+  become: yes
+  become_user: '{{ aur_user.name }}'
+  aur:
+    name: yay
+
+- name: Quality of Life software
+  block:
+    - name: CLI tools
+      become: yes
+      # FIXME: don't do all of this with yay
+      pacman:
+        name:
+          - ripgrep
+          - fzf
+          - the_silver_searcher
+          - exa
+          - starship
+        state: present
+    - name: CLI tools (AUR)
+      become: yes
+      become_user: '{{ aur_user.name }}'
+      aur:
+        name: scc

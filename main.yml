@@ -19,9 +19,6 @@
       - name: Install software
         import_tasks: '{{ playbooks_dir }}/software.yml'
         tags: software
-#      - name: Install "essential" software
-#        import_tasks: '{{ playbooks_dir }}/essentials.yml'
-#        tags: software
       become: yes
     - block: # User block 1
       - name: Config

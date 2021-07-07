@@ -5,7 +5,7 @@ aur_user:
   create_home: yes
   has_password: no
   sudoers_path: /etc/sudoers.d/11-install-aur_builder
-  sudoers_line: 'aur_abuilder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+  sudoers_line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
   state: present
 normal_user:
   name: sam
