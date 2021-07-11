@@ -1,4 +1,3 @@
 ---
 dependencies:
   - role: users
-    item: '{{ aur_user }}'

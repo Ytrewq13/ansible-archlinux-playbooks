@@ -1,6 +1,0 @@
----
-- name: Git clone the repository
-  git:
-    repo: '{{ item.url }}'
-    dest: '/home/{{ normal_user.name }}/{{ item.dest }}'
-    force: yes

@@ -1,5 +1,5 @@
 ---
-- name: Install the base-devel group
+- name: base-devel group
   pacman:
     name:
       - autoconf
@@ -28,28 +28,28 @@
       - which
     state: present
 
-- name: Install Access Control utilities
+- name: Access Control utilities (ACL)
   pacman:
     name: acl
     state: present
 
-- name: Install git
+- name: git
   pacman:
     name: git
     state: present
 
-- name: Install cmake
+- name: cmake
   pacman:
     name: cmake
     state: present
-- name: Install cross-compilation tools (LLVM & clang)
+- name: cross-compilation tools (LLVM & clang)
   pacman:
     name:
       - llvm
       - lld
       - clang
     state: present
-- name: Install QEMU (Quick EMUlator)
+- name: QEMU (Quick EMUlator)
   pacman:
     name:
       - qemu
