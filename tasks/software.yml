@@ -1,11 +1,24 @@
 ---
-# FIXME: Split these files into pacman and AUR software (to group by become_user)
+# TODO: Split these files into pacman and AUR software (to group by become_user)
 - name: Install development tools (compilers, interpreters, etc.)
   import_tasks: software/05_dev-tools.yml
   become: yes
 
 - name: Install the desktop (Window server & WM)
   import_tasks: software/07_desktop.yml
+  tags: desktop
+  become: yes
 
 - name: Install user programs (CLI, TUI, GUI)
   import_tasks: software/10_user-software.yml
+
+# TODO: organise these something like this:
+# - dev-tools               (including libs)
+# - dev-tools-AUR
+# - cli-tools
+# - cli-tools-AUR
+# - dektop                  (xorg, wm, lightdm, feh)
+# - gui-tools
+# - gui-tools-AUR
+# - gui-applications
+# - gui-applications-AUR

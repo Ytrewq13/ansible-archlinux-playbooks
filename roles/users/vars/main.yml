@@ -1,0 +1,19 @@
+---
+aur_user:
+  name: 'aur_builder'
+  groups: 'wheel'
+  create_home: true
+  sudoers_path: '/etc/sudoers.d/11-install-aur_builder'
+  sudoers_line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+  state: 'present'
+normal_user:
+  name: 'sam'
+  groups: 'wheel'
+  create_home: true
+  password: '$6$p10OVgfyYDmMox6J$mItSE2cM2pYugtvFIxu0FGnKULD3vxdRcZAWrjA.IfdFp25Q92q0ZQ0pWUTCL5YM.DBK6h0Vd0gZTF05EnlFA.'
+  sudoers_line: 'sam ALL=(ALL) NOPASSWD: ALL'
+  state: 'present'
+
+all_users:
+  - '{{ aur_user }}'
+  - '{{ normal_user }}'

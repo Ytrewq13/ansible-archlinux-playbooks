@@ -1,0 +1,4 @@
+---
+- name: Create a user, give them a password, and make them a sudoer
+  include_tasks: user.yml
+  with_items: '{{ all_users }}'

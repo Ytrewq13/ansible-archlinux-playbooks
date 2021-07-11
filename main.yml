@@ -1,28 +1,27 @@
 ---
 # The first play
-- hosts: all
-  vars_files:
-    - vars.yml
+- hosts: localhost #all
   pre_tasks:
     - name: Update pacman cache
-      become: yes
+      become: true
       pacman:
-        update_cache: yes
-#  handlers:
-#    - name: restart networkmanager
-#      service: name=networkmanager state=restarted
-  tasks:
-    - block: # root block 1
-      - name: User setup
-        import_tasks: '{{ playbooks_dir }}/user.yml'
-        tags: users
-      - name: Install software
-        import_tasks: '{{ playbooks_dir }}/software.yml'
-        tags: software
-      become: yes
-    - block: # User block 1
-      - name: Config
-        import_tasks: '{{ playbooks_dir }}/config.yml'
-        tags: config
-      become: yes
-      become_user: '{{ normal_user.name }}'
+        update_cache: true
+  roles:
+    - users
+    - software
+    - config
+#  tasks:
+#    - block: # root block 1
+#      - name: User setup
+#        import_tasks: '{{ playbooks_dir }}/user.yml'
+#        tags: users
+#      - name: Install software
+#        import_tasks: '{{ playbooks_dir }}/software.yml'
+#        tags: software
+#      become: yes
+#    - block: # User block 1
+#      - name: Config
+#        import_tasks: '{{ playbooks_dir }}/config.yml'
+#        tags: config
+#      become: yes
+#      become_user: '{{ normal_user.name }}'

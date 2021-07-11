@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role: users
+    item: '{{ normal_user }}'

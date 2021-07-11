@@ -1,0 +1,46 @@
+---
+# Prepare the destination directory for the git clone
+- name: Check if repo destination exists
+  stat:
+    path: '/home/{{ user.name }}/{{ item.dest }}'
+  register: dir
+- name: Check if repo destination is empty
+  find:
+    hidden: yes
+    paths: '/home/{{ user.name }}/{{ item.dest }}'
+  register: dirfind
+  when: dir.stat.exists and dir.stat.isdir
+- name: Check if repo destination is already a git repo
+  stat:
+    path: '/home/{{ user.name }}/{{ item.dest }}/.git'
+  register: gitdir
+  when: dir.stat.exists and dir.stat.isdir
+- name: Check if repo destination git config file exists
+  stat:
+    path: '/home/{{ user.name }}/{{ item.dest }}/.git/config'
+  register: gitconf
+  when: gitdir is not skipped and gitdir.stat.exists and gitdir.stat.isdir
+- name: Check the remote url of the existing git repo
+  command: 'grep -q "url = {{ item.url }}" "/home/{{ user.name }}/{{ item.dest }}/.git/config"'
+  check_mode: no
+  ignore_errors: yes
+  changed_when: no
+  register: urlcheck
+  when: gitconf is not skipped and gitconf.stat.exists
+# Delete the destination if we need to
+- name: Delete the repo destination
+  file:
+    path: '/home/{{ user.name }}/{{ item.dest }}'
+    state: absent
+  register: delete_dest
+  when: dir.stat.exists and not dir.stat.isdir
+    or  urlcheck is not skipped and urlcheck.rc != 0
+    or  gitconf is not skipped and not gitconf.stat.exists and
+        dirfind is not skipped and dirfind.matched > 0
+
+# Clone the repository
+- name: Git clone the repository
+  git:
+    repo: '{{ item.url }}'
+    dest: '/home/{{ user.name }}/{{ item.dest }}'
+    force: yes

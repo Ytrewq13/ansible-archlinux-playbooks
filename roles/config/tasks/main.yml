@@ -1,0 +1,19 @@
+---
+- name: Download the config repos
+  include_tasks: 01_install-repos.yml
+  vars:
+    user: '{{ normal_user }}'
+  with_items: '{{ config_repos }}'
+
+#- name: Prepare the directories for config files
+#  include_tasks: 01_prepare-dirs.yml
+#  with_items: '{{ config_repos }}'
+#
+#- name: Download all the config files
+#  include_tasks: 02_download-cfg.yml
+#  with_items: '{{ config_repos }}'
+
+- name: Symlink config files
+  include_tasks: 02_create-symlinks.yml
+  with_items: '{{ config_symlinks }}'
+  when: config_symlinks is defined

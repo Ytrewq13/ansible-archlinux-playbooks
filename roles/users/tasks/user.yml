@@ -1,0 +1,31 @@
+---
+- name: Create user accounts
+  become: true
+  user:
+    name: '{{ item.name }}'
+    groups: '{{ item.groups }}'
+    create_home: '{{ item.create_home }}'
+    state: '{{ item.state }}'
+- name: Set passwords for users
+  become: true
+  user:
+    name: '{{ item.name }}'
+    password: '{{ item.password }}'
+  when: item.password is defined and item.state == 'present'
+
+- name: Make users sudoers in custom sudoers file
+  become: true
+  lineinfile:
+    path: '{{ item.sudoers_path }}'
+    line: '{{ item.sudoers_line }}'
+    create: yes
+    validate: 'visudo -cf %s'
+  when: item.sudoers_line is defined and item.sudoers_path is defined and item.state == 'present'
+- name: Make users sudoers in default sudoers file
+  become: true
+  lineinfile:
+    path: '/etc/sudoers'
+    line: '{{ item.sudoers_line }}'
+    create: yes
+    validate: 'visudo -cf %s'
+  when: item.sudoers_line is defined and item.sudoers_path is not defined and item.state == 'present'

@@ -15,12 +15,13 @@
 
 - name: Window Manager (i3-gaps)
   pacman:
-    - i3-gaps
-    - i3status
-    - i3blocks
-    - i3lock
-    - py3status
-  state: present
+    name:
+      - i3-gaps
+      - i3status
+      - i3blocks
+      - i3lock
+      - py3status
+    state: present
 
 - name: Display Manager (lightdm)
   pacman:
