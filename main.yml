@@ -1,6 +1,6 @@
 ---
 # The first play
-- hosts: localhost #all
+- hosts: all
   pre_tasks:
     - name: Update pacman cache
       become: true
