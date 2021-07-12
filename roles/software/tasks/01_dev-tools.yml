@@ -55,3 +55,11 @@
       - qemu
       - qemu-arch-extra
     state: present
+
+- name: Bash & other shells
+  pacman:
+    name:
+      - bash
+      - bash-completion
+      - dash
+    state: present

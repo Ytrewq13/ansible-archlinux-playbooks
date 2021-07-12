@@ -1,0 +1,9 @@
+---
+argument_specs:
+  main:
+    short_description: The main entry point for the desktop backgrounds role
+    options:
+      user:
+        type: str
+        required: true
+        description: "The username of the user whose home to install the archive into."

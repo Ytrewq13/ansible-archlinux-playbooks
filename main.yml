@@ -1,6 +1,8 @@
 ---
 # The first play
 - hosts: all
+  vars_files:
+    - roles/users/vars/main.yml
   pre_tasks:
     - name: Update pacman cache
       become: true
@@ -15,3 +17,6 @@
       tags: software
     - role: config
       tags: config
+    - role: desktop_backgrounds
+      user: '{{ normal_user.name }}'
+      tags: desktop_backgrounds

@@ -1,0 +1,11 @@
+---
+- name: Enable lightdm
+  become: true
+  service:
+    name: lightdm
+    enabled: yes
+- name: Start lightdm
+  become: true
+  service:
+    name: lightdm
+    state: started

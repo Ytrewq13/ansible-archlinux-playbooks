@@ -6,6 +6,7 @@
     groups: '{{ item.groups }}'
     create_home: '{{ item.create_home }}'
     state: '{{ item.state }}'
+    system: '{{ item.system }}'
 - name: Set passwords for users
   become: true
   user:

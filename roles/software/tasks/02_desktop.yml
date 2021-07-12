@@ -29,3 +29,18 @@
       - lightdm
       - lightdm-gtk-greeter
     state: present
+  notify:
+    - Enable lightdm
+    - Start lightdm
+
+- name: Desktop background utilities
+  pacman:
+    name:
+      - feh
+      - scrot
+    state: present
+
+- name: Compositor (picom)
+  pacman:
+    name: picom
+    state: present

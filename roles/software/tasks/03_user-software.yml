@@ -1,6 +1,6 @@
 ---
 - name: Yay dependencies
-  become: yes
+  become: true
   pacman:
     name:
       - git
@@ -10,7 +10,7 @@
     state: present
 
 - name: Yay AUR helper
-  become: yes
+  become: true
   become_user: '{{ aur_user.name }}'
   aur:
     name: yay
@@ -18,7 +18,7 @@
 - name: Quality of Life software
   block:
     - name: CLI tools
-      become: yes
+      become: true
       pacman:
         name:
           - ripgrep
@@ -28,7 +28,45 @@
           - starship
         state: present
     - name: CLI tools (AUR)
-      become: yes
+      become: true
       become_user: '{{ aur_user.name }}'
       aur:
         name: scc
+
+- name: Terminal (terminator)
+  become: true
+  pacman:
+    name:
+      - terminator
+    state: present
+
+- name: Pinyin keyboard (fcitx)
+  become: true
+  pacman:
+    name:
+      - fcitx
+      - fcitx-configtool
+      - libpinyin
+      - fcitx-libpinyin
+    state: present
+
+- name: Fonts
+  become: true
+  pacman:
+    name:
+      - noto-fonts
+      - noto-fonts-cjk
+      - noto-fonts-emoji
+    state: present
+
+- name: LaTeX (texlive)
+  become: true
+  pacman:
+    name:
+      - texlive-bin
+      - texlive-core
+      - texlive-langchinese
+      - texlive-fontsextra
+      - texlive-langextra
+      - texlive-latexextra
+    state: present

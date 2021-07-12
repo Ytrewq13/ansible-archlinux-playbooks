@@ -1,12 +1,14 @@
 ---
 - name: Install development tools (compilers, interpreters, etc.)
   import_tasks: 01_dev-tools.yml
+  tags: dev_software
   become: true
 
 - name: Install the desktop (Window server & WM)
   import_tasks: 02_desktop.yml
-  tags: desktop
+  tags: desktop_software
   become: true
 
 - name: Install user programs (CLI, TUI, GUI)
   import_tasks: 03_user-software.yml
+  tags: user_software

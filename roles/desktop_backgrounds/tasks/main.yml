@@ -1,0 +1,10 @@
+---
+- name: Ensure the ~/Pictures/desktop-backgrounds dir exists
+  file:
+    path: '/home/{{ user }}/Pictures/desktop-backgrounds'
+    state: directory
+
+- name: Copy the desktop backgrounds onto the remote machine
+  unarchive:
+    src: backgrounds.tar.gz
+    dest: '/home/{{ user }}/Pictures/desktop-backgrounds'
